@@ -55,7 +55,7 @@ btnSearch.addEventListener('click', (event) => {
       // call API
       // const api =  "https://data.etabus.gov.hk/v1/transport/kmb/route-stop/{route}/{direction}/{service_type}";
       let { route, bound, service_type } = routeObj;
-      direction = boundShortToLong(bound);
+      direction = boundShortToLongForm(bound);
 
       fetch(
         `https://data.etabus.gov.hk/v1/transport/kmb/route-stop/${route}/${direction}/${service_type}`
@@ -67,12 +67,36 @@ btnSearch.addEventListener('click', (event) => {
 
           clearRouteStop();
 
-          // get route stop name and print
-          routeStopArr.forEach((stop) => {
+          // get route stop name and create html element, then append to the DOM
+          routeStopArr.forEach((routeStop) => {
             let pStop = document.createElement('p');
-            let stopId = stop.stop;
+            let stopId = routeStop.stop;
             let stopName = getStopNameById(stopId);
-            pStop.textContent = stopName;
+            pStop.innerText = `${routeStop.seq} ${stopName}`;
+
+            pStop.addEventListener('click', (e) => {
+              clearRouteStopETA();
+
+              fetch(
+                `https://data.etabus.gov.hk/v1/transport/kmb/eta/${stopId}/${route}/${service_type} `
+              )
+                .then((res) => res.json())
+                .then((ETA_Obj) => {
+                  console.log('ETA_Obj', ETA_Obj);
+                  // get eta time, create HTML elem then append to DOM
+                  let dataArr = ETA_Obj.data;
+                  let pTimeArr = dataArr.map((el) => {
+                    let datetime = new Date(el.eta);
+
+                    let pTime = document.createElement('p');
+                    pTime.innerText = datetime.toTimeString().slice(0, 5);
+                    return pTime;
+                  });
+
+                  clearRouteStopETA();
+                  divRouteStopETA.append(...pTimeArr);
+                });
+            });
 
             divRouteStop.append(pStop);
           });
@@ -81,7 +105,7 @@ btnSearch.addEventListener('click', (event) => {
   });
 });
 
-function boundShortToLong(char) {
+function boundShortToLongForm(char) {
   if (char !== 'I' && char !== 'O')
     console.warn('Error boundShortToLong: char should be i or o');
 
@@ -110,4 +134,9 @@ function clearRouteStop() {
 
 function clearRoutes() {
   divRoutes.replaceChildren();
+}
+
+const divRouteStopETA = document.getElementById('routeStopETA');
+function clearRouteStopETA() {
+  divRouteStopETA.replaceChildren();
 }
