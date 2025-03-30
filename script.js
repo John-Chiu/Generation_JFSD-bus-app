@@ -26,7 +26,7 @@ console.log('routesData', routesData);
 const inputRoute = document.getElementById('input-route');
 const btnSearch = document.getElementById('btn-search');
 const divRoutes = document.getElementById('routes');
-const divRouteStop = document.getElementById('routeStop');
+const divRouteStop = document.getElementById('routeStops');
 // console.log(inputRoute);
 // console.log(btnSearch);
 
@@ -71,12 +71,19 @@ btnSearch.addEventListener('click', (event) => {
 
           // get route stop name and create html element, then append to the DOM
           routeStopArr.forEach((routeStop) => {
-            let pStop = document.createElement('p');
+            let divStop = document.createElement('p');
             let stopId = routeStop.stop;
             let stopName = getStopNameById(stopId);
-            pStop.innerText = `${routeStop.seq} ${stopName}`;
+            divStop.classList.add('stop');
 
-            pStop.addEventListener('click', (e) => {
+            let p_Seq = document.createElement('p');
+            p_Seq.innerText = routeStop.seq;
+
+            // divStop.innerText = `${routeStop.seq} ${stopName}`;
+            divStop.append(p_Seq);
+            divStop.innerHTML += stopName;
+
+            divStop.addEventListener('click', (e) => {
               clearRouteStopETA();
 
               fetch(
@@ -100,7 +107,7 @@ btnSearch.addEventListener('click', (event) => {
                 });
             });
 
-            divRouteStop.append(pStop);
+            divRouteStop.append(divStop);
           });
         });
     });
