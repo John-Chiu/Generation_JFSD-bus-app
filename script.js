@@ -41,6 +41,7 @@ btnSearch.addEventListener('click', (event) => {
   // print filtered routes
   clearRoutes();
   clearRouteStop();
+  clearRouteStopETA();
 
   res.forEach((routeObj) => {
     let str = `${routeObj.orig_tc} ➡️ ${routeObj.dest_tc}`;
@@ -66,6 +67,7 @@ btnSearch.addEventListener('click', (event) => {
           let routeStopArr = routeStopObj.data;
 
           clearRouteStop();
+          clearRouteStopETA();
 
           // get route stop name and create html element, then append to the DOM
           routeStopArr.forEach((routeStop) => {
@@ -139,4 +141,10 @@ function clearRoutes() {
 const divRouteStopETA = document.getElementById('routeStopETA');
 function clearRouteStopETA() {
   divRouteStopETA.replaceChildren();
+}
+
+function clearAllBusContent() {
+  clearRoutes();
+  clearRouteStop();
+  clearRouteStopETA();
 }
