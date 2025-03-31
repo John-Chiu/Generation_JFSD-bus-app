@@ -6,9 +6,7 @@
 body {
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
     align-items: center;
-    /* align-content: ; */
 }
 
 #logo {
@@ -48,6 +46,7 @@ body {
     border: solid 1px gainsboro;
     padding: 5px;
     display: flex;
+    align-items: center;
 
     p {
         width: 30px;
@@ -57,4 +56,25 @@ body {
         margin-left: 10px;
         margin-right: 10px;
     }
+}
+
+#routeStopETA {
+    border: 1px solid darkblue;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background-color: white;
+
+    display: none;
+}
+
+#popUpDisabler {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    opacity: 0.5;
+    position: fixed;
+    top: 0;
+    left: 0;
 }

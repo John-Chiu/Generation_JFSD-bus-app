@@ -8,6 +8,9 @@
  *      since stops in response is ID, get chinese name of stop,
  *      then show then
  */
+
+// TODO clean up and revise code
+
 const INBOUND = 'inbound';
 const OUTBOUND = 'outbound';
 
@@ -43,6 +46,7 @@ btnSearch.addEventListener('click', (event) => {
   clearRouteStop();
   clearRouteStopETA();
 
+  divRoutes.innerText = '請選擇路線:';
   res.forEach((routeObj) => {
     let str = `${routeObj.orig_tc} ➡️ ${routeObj.dest_tc}`;
     console.log(str);
@@ -83,9 +87,10 @@ btnSearch.addEventListener('click', (event) => {
             divStop.append(p_Seq);
             divStop.innerHTML += stopName;
 
+            // add click handler to route stop that
+            // fetch and pop up a new window to show next bus time
             divStop.addEventListener('click', (e) => {
               clearRouteStopETA();
-
               fetch(
                 `https://data.etabus.gov.hk/v1/transport/kmb/eta/${stopId}/${route}/${service_type} `
               )
@@ -94,16 +99,21 @@ btnSearch.addEventListener('click', (event) => {
                   console.log('ETA_Obj', ETA_Obj);
                   // get eta time, create HTML elem then append to DOM
                   let dataArr = ETA_Obj.data;
-                  let pTimeArr = dataArr.map((el) => {
+                  let pTimeArr = dataArr.map((el, idx) => {
                     let datetime = new Date(el.eta);
+                    let pStop = document.createElement('p');
 
-                    let pTime = document.createElement('p');
-                    pTime.innerText = datetime.toTimeString().slice(0, 5);
-                    return pTime;
+                    if (el.eta === null) {
+                      pStop.innerText = '未有班次資料';
+                    } else {
+                      pStop.innerText =
+                        `(${idx})\t\t` + datetime.toTimeString().slice(0, 5);
+                    }
+
+                    return pStop;
                   });
 
-                  clearRouteStopETA();
-                  divRouteStopETA.append(...pTimeArr);
+                  renderRouteStopDiv(pTimeArr);
                 });
             });
 
@@ -113,6 +123,38 @@ btnSearch.addEventListener('click', (event) => {
     });
   });
 });
+
+const popUpDisabler = document.getElementById('popUpDisabler');
+popUpDisabler.addEventListener('click', (e) => {
+  function disablePopUp() {
+    divRouteStopETA.style.display = 'none';
+    popUpDisabler.style.display = 'none';
+  }
+  console.log('disable pop up');
+
+  disablePopUp();
+});
+/** re-render RouteStopDiv with given next bus time array
+ *  and pop it up */
+function renderRouteStopDiv(pTimeArr) {
+  clearRouteStopETA();
+  let div = createRouteStopETADiv();
+  div.append(...pTimeArr);
+  divRouteStopETA.append(div);
+  divRouteStopETA.style.display = 'block';
+  divRouteStopETA.style.zIndex = 2;
+
+  popUpDisabler.style.display = 'block';
+  popUpDisabler.style.zIndex = '1';
+}
+
+function createRouteStopETADiv() {
+  let div = document.createElement('div');
+  let title = document.createElement('h3');
+  title.innerText = '下班車時間';
+  div.append(title);
+  return div;
+}
 
 function boundShortToLongForm(char) {
   if (char !== 'I' && char !== 'O')
