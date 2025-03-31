@@ -58,3 +58,11 @@ body {
         margin-right: 10px;
     }
 }
+
+#routeStopETA {
+    border: 1px solid darkblue;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* background-color: white; */
+}

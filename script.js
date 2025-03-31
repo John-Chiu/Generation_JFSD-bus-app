@@ -96,14 +96,21 @@ btnSearch.addEventListener('click', (event) => {
                   let dataArr = ETA_Obj.data;
                   let pTimeArr = dataArr.map((el) => {
                     let datetime = new Date(el.eta);
+                    let pStop = document.createElement('p');
 
-                    let pTime = document.createElement('p');
-                    pTime.innerText = datetime.toTimeString().slice(0, 5);
-                    return pTime;
+                    if (el.eta === null) {
+                      pStop.innerText = '未有班次資料';
+                    } else {
+                      pStop.innerText = datetime.toTimeString().slice(0, 5);
+                    }
+
+                    return pStop;
                   });
 
                   clearRouteStopETA();
-                  divRouteStopETA.append(...pTimeArr);
+                  let div = createRouteStopETADiv();
+                  div.append(...pTimeArr);
+                  divRouteStopETA.append(div);
                 });
             });
 
@@ -113,6 +120,14 @@ btnSearch.addEventListener('click', (event) => {
     });
   });
 });
+
+function createRouteStopETADiv() {
+  let div = document.createElement('div');
+  let title = document.createElement('h3');
+  title.innerText = '下班車時間';
+  div.append(title);
+  return div;
+}
 
 function boundShortToLongForm(char) {
   if (char !== 'I' && char !== 'O')
