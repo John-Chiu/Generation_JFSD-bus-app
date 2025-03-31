@@ -64,5 +64,18 @@ body {
     position: fixed;
     top: 50%;
     left: 50%;
-    /* background-color: white; */
+    background-color: white;
+
+    display: none;
+}
+
+#popUpDisabler {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    opacity: 0.5;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
