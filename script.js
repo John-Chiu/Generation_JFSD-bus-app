@@ -52,10 +52,11 @@ btnSearch.addEventListener("click", (event) => {
       // call API
       // const api =  "https://data.etabus.gov.hk/v1/transport/kmb/route-stop/{route}/{direction}/{service_type}";
       let { route, bound, service_type } = routeObj;
-      direction = getBoundLongForm(bound);
+      let boundShortForm = bound;
+      let boundLongForm = getBoundLongForm(boundShortForm);
 
       fetch(
-        `https://data.etabus.gov.hk/v1/transport/kmb/route-stop/${route}/${direction}/${service_type}`
+        `https://data.etabus.gov.hk/v1/transport/kmb/route-stop/${route}/${boundLongForm}/${service_type}`
       )
         .then((res) => res.json())
         .then((routeStopObj) => {
@@ -91,7 +92,12 @@ btnSearch.addEventListener("click", (event) => {
                   console.log("ETA_Obj", ETA_Obj);
                   // get eta time, create HTML elem then append to DOM
                   let dataArr = ETA_Obj.data;
-                  let pTimeArr = dataArr.map((el, idx) => {
+                  // API give both bound ETA, have to filter to get our bound ETA
+                  let etaArr = dataArr.filter(
+                    (el) => el.dir === boundShortForm
+                  );
+                  console.log("filteredETA_Arr", etaArr);
+                  let pTimeArr = etaArr.map((el, idx) => {
                     let datetime = new Date(el.eta);
                     let pStop = document.createElement("p");
 
