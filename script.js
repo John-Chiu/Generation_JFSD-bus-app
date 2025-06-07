@@ -122,14 +122,14 @@ btnSearch.addEventListener("click", (event) => {
   });
 });
 
+function disablePopUp() {
+  divRouteStopETA.style.display = "none";
+  popUpDisabler.style.display = "none";
+  console.log("disable pop up");
+}
+
 const popUpDisabler = document.getElementById("popUpDisabler");
 popUpDisabler.addEventListener("click", (e) => {
-  function disablePopUp() {
-    divRouteStopETA.style.display = "none";
-    popUpDisabler.style.display = "none";
-  }
-  console.log("disable pop up");
-
   disablePopUp();
 });
 
