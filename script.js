@@ -154,14 +154,14 @@ function renderRouteStopDiv(stopName, pTimeArr) {
 function createRouteStopETADiv(stopName = "stopName placeholder") {
   let div = document.createElement("div");
 
-  let stopNameDiv = document.createElement("h2");
-  stopNameDiv.innerText = stopName;
+  let stopNameElem = document.createElement("h2");
+  stopNameElem.innerText = stopName;
 
-  let title = document.createElement("h4");
-  title.innerText = "下班車時間";
+  let pTagElem = document.createElement("p");
+  pTagElem.innerText = "下班車時間";
 
-  div.append(stopNameDiv);
-  div.append(title);
+  div.append(stopNameElem);
+  div.append(pTagElem);
 
   return div;
 }
