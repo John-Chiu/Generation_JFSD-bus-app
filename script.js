@@ -111,7 +111,7 @@ btnSearch.addEventListener("click", (event) => {
                     return pStop;
                   });
 
-                  renderRouteStopDiv(pTimeArr);
+                  renderRouteStopDiv(stopName, pTimeArr);
                 });
             });
 
@@ -136,10 +136,12 @@ popUpDisabler.addEventListener("click", (e) => {
 /**
  * re-render RouteStopDiv with given next bus time array
  * and pop it up
- * */
-function renderRouteStopDiv(pTimeArr) {
+ * @param {string} stopName
+ * @param {array} pTimeArr array of HTML `<p>` tag element
+ */
+function renderRouteStopDiv(stopName, pTimeArr) {
   clearRouteStopETA();
-  let div = createRouteStopETADiv();
+  let div = createRouteStopETADiv(stopName);
   div.append(...pTimeArr);
   divRouteStopETA.append(div);
   divRouteStopETA.style.display = "block";
@@ -149,11 +151,18 @@ function renderRouteStopDiv(pTimeArr) {
   popUpDisabler.style.zIndex = "1";
 }
 
-function createRouteStopETADiv() {
+function createRouteStopETADiv(stopName = "stopName placeholder") {
   let div = document.createElement("div");
-  let title = document.createElement("h3");
+
+  let stopNameDiv = document.createElement("h2");
+  stopNameDiv.innerText = stopName;
+
+  let title = document.createElement("h4");
   title.innerText = "下班車時間";
+
+  div.append(stopNameDiv);
   div.append(title);
+
   return div;
 }
 
