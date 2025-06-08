@@ -1,5 +1,8 @@
 # KMB Bus ETA Web App
 
+![Screenshot of the app](./images/bus-app-UI.jpg)
+![Screenshot of the app](./images/bus-app-UI-ETA.jpg)
+
 A simple web application to check the next bus ETA for a specified route at a specific bus stop.
 
 ## Usage
