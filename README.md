@@ -21,4 +21,3 @@ Open data from the Hong Kong Government:
 - HTML
 - CSS
 - JavaScript
-- ReactJS
